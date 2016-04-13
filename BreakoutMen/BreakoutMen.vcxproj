@@ -148,6 +148,18 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="GameInit.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Paddle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="GameInit.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="Paddle.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\sdl2.v140.redist.2.0.4\build\native\sdl2.v140.redist.targets" Condition="Exists('..\packages\sdl2.v140.redist.2.0.4\build\native\sdl2.v140.redist.targets')" />
