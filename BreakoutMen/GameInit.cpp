@@ -35,6 +35,47 @@ bool GameInit::Init() {
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
-	SDL_Delay(5000);
-	return true;
+
+	SDL_Surface* image = SDL_LoadBMP("sdl2.bmp");
+
+	if (image == NULL)
+	{
+		std::cerr << "Failed to load image, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+		return EXIT_FAILURE;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+
+	if (texture == NULL)
+	{
+		std::cerr << "Failed to generate texture, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+		SDL_FreeSurface(image);
+		return EXIT_FAILURE;
+	}
+
+	SDL_Rect bounding_box;
+	bounding_box.h = image->h;
+	bounding_box.w = image->w;
+	bounding_box.x = 0;
+	bounding_box.y = 0;
+
+	SDL_FreeSurface(image);
+
+	SDL_RenderCopy(renderer, texture, NULL, &bounding_box);
+	SDL_RenderPresent(renderer);
+
+
+	system("pause");
+
+	SDL_DestroyTexture(texture);
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+	return EXIT_SUCCESS;
 }
