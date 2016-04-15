@@ -18,7 +18,7 @@ GameInit::~GameInit()
 }
 
 bool GameInit::Init() {
-	window = SDL_CreateWindow("Iben og lasse, ikke frode for han er på mobilen hele tiden",
+	window = SDL_CreateWindow("Iben og lasse, ikke frode for han kommer aldri",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		SCREEN_WIDTH,
@@ -33,7 +33,7 @@ bool GameInit::Init() {
 		SDL_Quit();
 		return false;
 	}
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 	SDL_RenderClear(renderer);
 	SDL_Delay(5000);
 	return true;
