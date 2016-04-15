@@ -1,11 +1,6 @@
 #include "GameInit.h"
 #include <iostream>
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
-
-
-
 GameInit::GameInit()
 {
 	window = NULL;
@@ -78,4 +73,13 @@ bool GameInit::Init() {
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return EXIT_SUCCESS;
+}
+
+void GameInit::Run() {
+	paddle = new Paddle(renderer);
+
+	//NewGame();
+	//Clean();
+
+	SDL_Quit();
 }

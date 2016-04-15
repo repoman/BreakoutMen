@@ -1,15 +1,23 @@
 #include "SDL.h"
-#include "GameManager.h"
+#include "GameInit.h"
 
-class Paddle: public GameManager
+class Paddle
 {
 public:
-	Paddle(SDL_Renderer* renderer);
-	~Paddle();
+	static const int PADDLE_WIDTH = 40;
+	static const int PADDLE_HEIGHT = 10;
 
-	void Update(float delta);
-	void Render(float delta);
+	static const int PADDLE_SPEED = 10;
+
+	Paddle();
+
+	void handleEvent(SDL_Event& e);
+
+	void move();
+
+	void render();
 
 private:
-	SDL_Texture* texture;
+	int mPosX, mPosY;
+	int mVelX;
 };

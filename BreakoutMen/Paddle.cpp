@@ -1,33 +1,41 @@
 #include "Paddle.h"
 
 
+Paddle::Paddle() {
+	mPosX = 0;
+	mPosY = 0;
 
-Paddle::Paddle(SDL_Renderer* renderer) : GameManager(renderer) {
-	SDL_Surface* surface = IMG_Load("sdl2.bmp");
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_FreeSurface(surface);
+	mVelX = 0;
 
-	width = 128;
-	height = 32;
-
-	y = 0;
-	x = 64;
-}
-
-Paddle::~Paddle() {
-	SDL_DestroyTexture(texture);
-}
-
-
-void Paddle::Update(float delta) {
 
 }
 
-void Paddle::Render(float delta) {
-	SDL_Rect rect;
-	rect.x = (int)(x + 0.5f);
-	rect.y = (int)(y + 0.5f);
-	rect.w = width;
-	rect.h = height;
-	SDL_RenderCopy(renderer, texture, 0, &rect);
+void Paddle::handleEvent(SDL_Event& e) {
+	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
+		switch (e.key.keysym.sym)
+		{
+		case SDLK_LEFT: mVelX -= PADDLE_SPEED; break;
+		case SDLK_RIGHT: mVelX += PADDLE_SPEED; break;
+		}
+	}
+
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
+		switch (e.key.keysym.sym)
+		{
+		case SDLK_LEFT: mVelX += PADDLE_SPEED; break;
+		case SDLK_RIGHT: mVelX -= PADDLE_SPEED; break;
+		}
+	}
+}
+
+void Paddle::move() {
+	mPosX += mVelX;
+
+	if ((mPosX < 0) || (mPosX + PADDLE_WIDTH > GameInit::SCREEN_WIDTH)) {
+		mPosX -= mVelX;
+	}
+}
+
+void Paddle::render() {
+	gtexture.render(mPosX, mPosY);
 }
