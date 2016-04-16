@@ -1,39 +1,96 @@
-#include "SDL.h"
 #include <iostream>
-
-struct Entity {
-	SDL_Rect screen_location;
-	SDL_Rect bitmap_location;
-
-	int x_speed;
-	int y_speed;
-};
+#include <SDL.h>
 
 int main(int argc, char* argv[])
 {
-	SDL_Init(SDL_INIT_VIDEO); // Init. SDL2
-	SDL_Window* window = NULL; // Pointer to Window
-							   // Lag et vindu med gitte settings
-							   // For alle mulige konfigurasjonsalternativer, se: http://goo.gl/8vDJN
-	window = SDL_CreateWindow(
-		"Et awesome SDL2-vindu!", // window title
-		SDL_WINDOWPOS_UNDEFINED, // initial x position
-		SDL_WINDOWPOS_UNDEFINED, // initial y position
-		550, // width, in pixels
-		400, // height, in pixels
-		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL // flags
-		);
-	// Sjekk om noe gikk galt
-	if (window == NULL)
+	if (SDL_Init(SDL_INIT_VIDEO))
 	{
-		std::cerr << "Failed to create window: "
-			<< SDL_GetError() << std::endl;
-		SDL_Quit(); // Rydd opp!
+		std::cerr << "Failed to initialize SDL, details:" << SDL_GetError() << std::endl;
+
 		return EXIT_FAILURE;
 	}
-	// Pause i 3 sekunder, lukk vinduet
-	SDL_Delay(3000);
+
+	SDL_Window* window = SDL_CreateWindow(
+		"An awesome SDL window",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		550,
+		400,
+		SDL_WINDOW_SHOWN
+		);
+
+	if (window == NULL)
+	{
+		std::cerr << "Failed to open SDL window, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		return EXIT_FAILURE;
+	}
+
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	if (renderer == NULL)
+	{
+		std::cerr << "Failed to create renderer, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		SDL_DestroyWindow(window);
+		return EXIT_FAILURE;
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_RenderClear(renderer);
+
+	SDL_Surface* image = SDL_LoadBMP("sdl2.bmp");
+
+	if (image == NULL)
+	{
+		std::cerr << "Failed to load image, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+		return EXIT_FAILURE;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
+
+	if (texture == NULL)
+	{
+		std::cerr << "Failed to generate texture, details:" << SDL_GetError() << std::endl;
+		SDL_Quit();
+		SDL_DestroyWindow(window);
+		SDL_DestroyRenderer(renderer);
+		SDL_FreeSurface(image);
+		return EXIT_FAILURE;
+	}
+
+	SDL_Rect bounding_box;
+	bounding_box.h = image->h;
+	bounding_box.w = image->w;
+	bounding_box.x = 0;
+	bounding_box.y = 0;
+
+	SDL_FreeSurface(image);
+
+	// ---------------------------------------
+	// Game loop would normally run from here.
+
+	// TODO: 1) Get input.
+
+	// TODO: 2) Do business (domain) logic.
+
+	// 3) Render output:
+	SDL_RenderCopy(renderer, texture, NULL, &bounding_box);
+	SDL_RenderPresent(renderer);
+
+	// Game loop would normally end here.
+	// ---------------------------------------
+
+	std::cout << "Everything went better than expected!" << std::endl;
+
+	system("pause");
+
+	SDL_DestroyTexture(texture);
+	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
-	SDL_Quit(); // Be SDL om å rydde opp
+	SDL_Quit();
 	return EXIT_SUCCESS;
 }
