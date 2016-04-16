@@ -150,14 +150,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
-    <ClInclude Include="GameInit.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="Paddle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
-    <ClCompile Include="GameInit.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Paddle.cpp" />
