@@ -1,5 +1,6 @@
 #include "SDL.h"
-#include "GameInit.h"
+#include "Main.cpp"
+#include "GameInit.h
 #include <iostream>
 #include <SDL.h>
 

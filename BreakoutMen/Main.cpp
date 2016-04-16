@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	SDL_Window* window = SDL_CreateWindow(
+	window = SDL_CreateWindow(
 		"An awesome SDL window",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
