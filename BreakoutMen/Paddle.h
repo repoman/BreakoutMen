@@ -9,7 +9,7 @@ public:
 
 	static const int PADDLE_SPEED = 10;
 
-	Paddle();
+	Paddle(SDL_Renderer* renderer);
 
 	void handleEvent(SDL_Event& e);
 
@@ -20,4 +20,6 @@ public:
 private:
 	int mPosX, mPosY;
 	int mVelX;
+
+	SDL_Texture* texture;
 };

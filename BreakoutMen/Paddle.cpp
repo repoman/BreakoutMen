@@ -1,7 +1,11 @@
 #include "Paddle.h"
 
 
-Paddle::Paddle() {
+Paddle::Paddle(SDL_Renderer* renderer) {
+	SDL_Surface* surface = IMG_Load("sdl2.bmp");
+	texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+
 	mPosX = 0;
 	mPosY = 0;
 
@@ -37,5 +41,10 @@ void Paddle::move() {
 }
 
 void Paddle::render() {
-	gtexture.render(mPosX, mPosY);
+	SDL_Rect rect;
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = PADDLE_WIDTH;
+	rect.h = PADDLE_HEIGHT;
+	SDL_RenderCopy(renderer, texture, 0, &rect);
 }
