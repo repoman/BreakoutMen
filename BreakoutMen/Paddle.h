@@ -1,5 +1,7 @@
 #include "SDL.h"
 #include "GameInit.h"
+#include <iostream>
+#include <SDL.h>
 
 class Paddle
 {

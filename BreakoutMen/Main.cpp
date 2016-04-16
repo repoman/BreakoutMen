@@ -17,16 +17,17 @@ int main(int argc, char* argv[])
 		550,
 		400,
 		SDL_WINDOW_SHOWN
-		);
+		); // her lagar vi vinduet skjønner?
 
 	if (window == NULL)
 	{
 		std::cerr << "Failed to open SDL window, details:" << SDL_GetError() << std::endl;
 		SDL_Quit();
 		return EXIT_FAILURE;
-	}
+	} // her sjækk vi om vinduet gikk feilåt, skjønner?
 
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	//lag en renderer, skjønner?
 
 	if (renderer == NULL)
 	{
@@ -34,12 +35,12 @@ int main(int argc, char* argv[])
 		SDL_Quit();
 		SDL_DestroyWindow(window);
 		return EXIT_FAILURE;
-	}
+	} // gikk det en feil skjønner?
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); // gjør rendern svart skjønner?
+	SDL_RenderClear(renderer); //her klarerer man renderern skjønner?
 
-	SDL_Surface* image = SDL_LoadBMP("sdl2.bmp");
+	SDL_Surface* image = SDL_LoadBMP("sdl2.bmp"); //her sætt man et bilde i ramman
 
 	if (image == NULL)
 	{
@@ -48,7 +49,7 @@ int main(int argc, char* argv[])
 		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
 		return EXIT_FAILURE;
-	}
+	} //sjekk om at bildet funka???
 
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image);
 
@@ -60,13 +61,13 @@ int main(int argc, char* argv[])
 		SDL_DestroyRenderer(renderer);
 		SDL_FreeSurface(image);
 		return EXIT_FAILURE;
-	}
+	} // funka teksturen skjøner???
 
 	SDL_Rect bounding_box;
-	bounding_box.h = image->h;
-	bounding_box.w = image->w;
-	bounding_box.x = 0;
-	bounding_box.y = 0;
+	bounding_box.h = 10;
+	bounding_box.w = 90;
+	bounding_box.x = 250;
+	bounding_box.y = 360;
 
 	SDL_FreeSurface(image);
 
