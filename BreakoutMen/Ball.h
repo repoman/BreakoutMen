@@ -9,18 +9,14 @@ class Ball
 	Ball(Paddle* paddle);
 	~Ball();
 
-	//ball status
 	int status;
 	
-	//Ball dimensions
 	static const int WIDTH;
 	static const int HEIGHT;
 
-	//ball position
 	int x;
 	int y;
 
-	// ball movements
 	int dx;
 	int dy;
 

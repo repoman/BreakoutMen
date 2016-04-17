@@ -23,7 +23,6 @@ int Paddle::get_y() const {
 void Paddle::set_x(int new_x) {
 	x = new_x;
 
-	// Paddle shouldn't be allowed to go above or below the screen.
 	if (x < 0)
 		x = 0;
 	else if (x + WIDTH > Game::SCREEN_WIDTH)
@@ -33,7 +32,6 @@ void Paddle::set_x(int new_x) {
 void Paddle::add_to_x(int new_x) {
 	x += new_x;
 
-	// Paddle shouldn't be allowed to go above or below the screen.
 	if (x < 0)
 		x = 0;
 	else if (x + WIDTH > Game::SCREEN_WIDTH)

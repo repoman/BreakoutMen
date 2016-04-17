@@ -14,7 +14,6 @@ public:
 	bool leftKeyDown;
 	bool rightKeyDown;
 
-	// Paddle dimensions
 	static const int WIDTH;
 	static const int HEIGHT;
 
