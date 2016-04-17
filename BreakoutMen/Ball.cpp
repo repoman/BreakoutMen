@@ -36,10 +36,10 @@ Ball::~Ball()
 
 void Ball::launch_ball(Paddle *paddle) {
 	std::uniform_int_distribution<int> dir(0, 1);
-	int direction = 1 + (-2)*(dir(gen) % 2);  // Either 1 or -1.
+	int direction = 1 + (-2)*(dir(gen) % 2);
 
 	std::uniform_int_distribution<int> ang(-60, 60);
-	angle = ang(gen);  // Between -60 and 60.
+	angle = ang(gen);
 
 	dx = speed/2;
 	dy = -speed/2;
@@ -68,7 +68,6 @@ bool Ball::wall_collision()
 }
 
 bool Ball::collides_with(Paddle *paddle) {
-	// Sjekk om ballen kolliderer med paddle i neste frame
 	if (x > paddle->get_x() + Paddle::WIDTH ||
 		x < paddle->get_x() ||
 		!(y + WIDTH > paddle->get_y() &&
@@ -80,7 +79,6 @@ bool Ball::collides_with(Paddle *paddle) {
 
 bool Ball::collides_with_brick(Brick *brick)
 {
-	// Check if collision with left paddle occurs in next frame
 	if ((x > brick->get_x() &&
 	x < brick->get_x() + brick->WIDTH) && (y > brick->get_y() &&
 		y < brick->get_y() + brick->HEIGHT))
@@ -91,17 +89,13 @@ bool Ball::collides_with_brick(Brick *brick)
 	}
 }
 
-
-// Reset ball to initial state.
 void Ball::reset(Paddle *paddle) {
 	x = paddle->get_x();
 	y = paddle->get_y() - this->HEIGHT / 2;
 
-	// Ball is fixed.
 	dx = 0;
 	dy = 0;
 	status = 0;
 
-	// Speed and hit counter are reset to their initial positions.
 	speed = 8;
 }
