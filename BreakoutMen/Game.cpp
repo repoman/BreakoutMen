@@ -31,11 +31,7 @@ Game::Game(int argc, char *argv[]) {
 	// Instantiate game objects.
 	ball = new Ball(SCREEN_WIDTH / 2 - ball->WIDTH / 2,
 		SCREEN_HEIGHT / 2 - ball->WIDTH / 2);
-	left_paddle = new Paddle(SCREEN_WIDTH/2, SCREEN_HEIGHT - 20);
-	//right_paddle = new Paddle(SCREEN_WIDTH - (40 + Paddle::WIDTH),
-	//	SCREEN_HEIGHT / 2 - Paddle::HEIGHT / 2);
-
-	//bricks[32];
+	paddle = new Paddle(SCREEN_WIDTH/2, SCREEN_HEIGHT - 20);
 
 	for (int i = 0;i < 32;i++)
 	{
@@ -142,6 +138,13 @@ void Game::input() {
 				}
 				break;
 
+			case SDLK_LEFT:
+				paddle->leftKeyDown = true;
+				break;
+
+			case SDLK_RIGHT:
+				paddle->rightKeyDown = true;
+				break;
 
 				// Pressing F11 to toggle fullscreen.
 			case SDLK_F11:
@@ -155,6 +158,20 @@ void Game::input() {
 				break;
 			}
 		}
+
+		if (event.type == SDL_KEYUP)
+		{
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				paddle->leftKeyDown = false;
+				break;
+
+			case SDLK_RIGHT:
+				paddle->rightKeyDown = false;
+				break;
+			}
+		}
 	}
 }
 
@@ -162,17 +179,27 @@ void Game::input() {
 void Game::update() {
 	// Paddle movement.
 
+	if (paddle->leftKeyDown)
+	{
+		paddle->add_to_x(-10);
+	}
+
+	if (paddle->rightKeyDown)
+	{
+		paddle->add_to_x(10);
+	}
+
 	// Launch ball.
 	if (ball->status == 0) {
 		return;
 	}
 	else if (ball->status == 1) {
-		ball->launch_ball(left_paddle);
+		ball->launch_ball(paddle);
 	}
 
 	// Collision.
-	if (ball->collides_with(left_paddle)) {
-		ball->bounces_off(left_paddle);
+	if (ball->collides_with(paddle)) {
+		ball->bounces_off(paddle);
 		//Mix_PlayChannel(-1, paddle_sound, 0);  // Play collision sound.
 	}
 
@@ -219,10 +246,10 @@ void Game::render() {
 	}
 
 	// Render filled paddle.
-	SDL_Rect paddle1 = { left_paddle->get_x(),
-		left_paddle->get_y(),
+	SDL_Rect paddleRect = { paddle->get_x(),
+		paddle->get_y(),
 		Paddle::WIDTH, Paddle::HEIGHT };
-	SDL_RenderFillRect(renderer, &paddle1);
+	SDL_RenderFillRect(renderer, &paddleRect);
 
 	// Render ball.
 	SDL_Rect pong_ball = { ball->x, ball->y, ball->WIDTH, ball->WIDTH };

@@ -11,13 +11,15 @@ private:
 public:
 	Paddle(int x, int y);
 
+	bool leftKeyDown;
+	bool rightKeyDown;
+
 	// Paddle dimensions
 	static const int WIDTH;
 	static const int HEIGHT;
 
 	int get_x() const;
 	int get_y() const;
-	void set_y(int new_y);
-	void add_to_y(int new_y);
-	//int predict(Ball *ball); void AI(Ball *ball);
+	void set_x(int new_x);
+	void add_to_x(int new_x);
 };

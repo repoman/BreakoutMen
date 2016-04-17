@@ -8,6 +8,8 @@ const int Paddle::WIDTH = 60;
 Paddle::Paddle(int new_x, int new_y) {
 	x = new_x;
 	y = new_y;
+	leftKeyDown = false;
+	rightKeyDown = false;
 }
 
 int Paddle::get_x() const {
@@ -18,22 +20,22 @@ int Paddle::get_y() const {
 	return y;
 }
 
-void Paddle::set_y(int new_y) {
-	y = new_y;
+void Paddle::set_x(int new_x) {
+	x = new_x;
 
 	// Paddle shouldn't be allowed to go above or below the screen.
-	if (y < 0)
-		y = 0;
-	else if (y + HEIGHT > Game::SCREEN_HEIGHT)
-		y = Game::SCREEN_HEIGHT - HEIGHT;
+	if (x < 0)
+		x = 0;
+	else if (x + WIDTH > Game::SCREEN_WIDTH)
+		x = Game::SCREEN_WIDTH - WIDTH;
 }
 
-void Paddle::add_to_y(int new_y) {
-	y += new_y;
+void Paddle::add_to_x(int new_x) {
+	x += new_x;
 
 	// Paddle shouldn't be allowed to go above or below the screen.
-	if (y < 0)
-		y = 0;
-	else if (y + HEIGHT > Game::SCREEN_HEIGHT)
-		y = Game::SCREEN_HEIGHT - HEIGHT;
+	if (x < 0)
+		x = 0;
+	else if (x + WIDTH > Game::SCREEN_WIDTH)
+		x = Game::SCREEN_WIDTH - WIDTH;
 }

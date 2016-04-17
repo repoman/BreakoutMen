@@ -16,7 +16,7 @@ private:
 
 							 // Game objects.
 	Ball* ball;
-	Paddle* left_paddle;
+	Paddle* paddle;
 	Brick* bricks[32];
 
 	// Controllers.
