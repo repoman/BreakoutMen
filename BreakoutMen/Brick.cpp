@@ -14,3 +14,11 @@ Brick::Brick()
 {
 	
 }
+
+int Brick::get_x() const {
+	return x;
+}
+
+int Brick::get_y() const {
+	return y;
+}

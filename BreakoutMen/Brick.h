@@ -13,4 +13,7 @@ public:
 	static const int WIDTH;
 	static const int HEIGHT;
 	bool dead;
+
+	int get_x() const;
+	int get_y() const;
 };

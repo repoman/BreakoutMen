@@ -5,6 +5,7 @@
 #include <SDL_stdinc.h>
 
 #include "Paddle.h"
+#include "Brick.h"
 #include "Game.h"
 
 namespace {
@@ -12,15 +13,15 @@ namespace {
 	std::mt19937 gen(rd());
 }
 
-const int Ball::WIDTH = 32;
-const int Ball::HEIGHT = 32;
+const int Ball::WIDTH = 16;
+const int Ball::HEIGHT = 16;
 
 Ball::Ball(Paddle* paddle)
 {
 	status = 0;
 
 	x = paddle->get_x();
-	y = paddle->get_y() - this->HEIGHT / 2;
+	y = paddle->get_y() - this->HEIGHT;
 
 	dx = 0;
 	dy = 0;
@@ -46,7 +47,7 @@ void Ball::launch_ball(Paddle *paddle) {
 	status = 2;
 
 	x = paddle->get_x();
-	y = paddle->get_y()-this->HEIGHT/2;
+	y = paddle->get_y()-this->HEIGHT;
 }
 
 void Ball::bounces_off(Paddle *paddle) {
@@ -73,11 +74,11 @@ bool Ball::roof_collision() {
 
 bool Ball::wall_collision()
 {
-	return (x + dx <= 0) || (x + dx + WIDTH > Game::SCREEN_WIDTH);
+	return (x + dx <= 0) || (x + dx + WIDTH >= Game::SCREEN_WIDTH);
 }
 
 bool Ball::collides_with(Paddle *paddle) {
-	if (paddle->get_x() < Game::SCREEN_WIDTH / 2) {
+	if (paddle->get_x() < Game::SCREEN_WIDTH)
 		// Check if collision with left paddle occurs in next frame
 		if (x > paddle->get_x() + Paddle::WIDTH ||
 			x < paddle->get_x() ||
@@ -86,22 +87,19 @@ bool Ball::collides_with(Paddle *paddle) {
 			return false;
 		else
 			return true;
-	}
-	else {
-		// Check if collision with right paddle occurs in next frame.
-		if (x + WIDTH < paddle->get_x() ||
-			x > paddle->get_x() + Paddle::WIDTH ||
-			!(y + WIDTH > paddle->get_y() &&
-				y <= paddle->get_y() + Paddle::HEIGHT))
-			return false;
-		else
-			return true;
-	}
 }
 
-bool Ball::collides_with_brick(Brick* brick)
+bool Ball::collides_with_brick(Brick *brick)
 {
-	//if (x == brick->getx)
+	// Check if collision with left paddle occurs in next frame
+	if ((x > brick->get_x() &&
+	x < brick->get_x() + brick->WIDTH) && (y > brick->get_y() &&
+		y < brick->get_y() + brick->HEIGHT))
+	{
+		return true;
+	} else {
+	return false;
+	}
 }
 
 

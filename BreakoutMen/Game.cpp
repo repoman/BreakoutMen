@@ -192,12 +192,20 @@ void Game::update() {
 	// Upper and side walls collision.
 	if (ball->roof_collision()) {
 		ball->dy *= -1;  // Reverse ball direction on y-axis.
-		//Mix_PlayChannel(-1, wall_sound, 0);  // Play collision sound.
 	}
 
 	if (ball->wall_collision())
 	{
 		ball->dx *= -1;
+	}
+
+	for (int i = 0;i < 32;i++)
+	{
+		if (!bricks[i]->dead && ball->collides_with_brick(bricks[i]))
+		{
+			bricks[i]->dead = true;
+			ball->dy *= -1;
+		}
 	}
 
 	// Update ball coordinates.
@@ -221,9 +229,12 @@ void Game::render() {
 
 	// Render bricks
 	for (int i = 0;i < 32;i++)
-	{			
-		SDL_Rect brick = { bricks[i]->x, bricks[i]->y, bricks[i]->WIDTH, bricks[i]->HEIGHT };
-		SDL_RenderFillRect(renderer, &brick);
+	{
+		if (!bricks[i]->dead)
+		{
+			SDL_Rect brick = { bricks[i]->x, bricks[i]->y, bricks[i]->WIDTH, bricks[i]->HEIGHT };
+			SDL_RenderFillRect(renderer, &brick);
+		}
 	}
 
 	// Render filled paddle.
