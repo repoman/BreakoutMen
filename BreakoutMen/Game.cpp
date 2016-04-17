@@ -1,38 +1,10 @@
 #include "Game.h"
-
-/*GameManager::GameManager(SDL_Renderer* renderer) {
-	this->renderer = renderer;
-
-	x = 0;
-	y = 0;
-	width = 1;
-	height = 1;
-}
-
-GameManager::~GameManager()
-{
-}
-
-void GameManager::Update(float delta) {
-}
-
-void GameManager::Render(float delta) {
-}
-
-bool GameManager::Collides(GameManager* other) {
-	if (x + width > other->x && x < other->x + other->width &&
-		y + height > other->y && y < other->y + other->height) {
-		return true;
-	}
-	return false;
-}
-*/
-
-#include <iostream>
-
 #include "Ball.h"
 #include "Paddle.h"
 #include "Utilities.h"
+
+#include <iostream>
+#include "Brick.h"
 
 // Screen resolution.
 const int Game::SCREEN_WIDTH = 640;
@@ -59,23 +31,34 @@ Game::Game(int argc, char *argv[]) {
 	// Instantiate game objects.
 	ball = new Ball(SCREEN_WIDTH / 2 - ball->WIDTH / 2,
 		SCREEN_HEIGHT / 2 - ball->WIDTH / 2);
-	left_paddle = new Paddle(40, SCREEN_HEIGHT / 2 - Paddle::HEIGHT / 2);
-	right_paddle = new Paddle(SCREEN_WIDTH - (40 + Paddle::WIDTH),
-		SCREEN_HEIGHT / 2 - Paddle::HEIGHT / 2);
+	left_paddle = new Paddle(SCREEN_WIDTH/2, SCREEN_HEIGHT - 20);
+	//right_paddle = new Paddle(SCREEN_WIDTH - (40 + Paddle::WIDTH),
+	//	SCREEN_HEIGHT / 2 - Paddle::HEIGHT / 2);
 
-	// Sounds.
+	//bricks[32];
 
-	// Initialize SDL_mixer.
-	//Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
-
-	// Load paddle sound.
-	//paddle_sound = Mix_LoadWAV("resources/sounds/paddle_hit.wav");
-
-	// Load wall sound.
-	//wall_sound = Mix_LoadWAV("resources/sounds/wall_hit.wav");
-
-	// Load score sound.
-	//score_sound = Mix_LoadWAV("resources/sounds/score_update.wav");
+	for (int i = 0;i < 32;i++)
+	{
+		int x = i * (SCREEN_WIDTH / 8) + 3;
+		int y = 0;
+		if (i > 7 && i < 16)
+		{
+			x = x - SCREEN_WIDTH;
+			y = 20;
+		}
+		if (i > 15 && i < 24)
+		{
+			x = x - (SCREEN_WIDTH * 2);
+			y = 20 * 2;
+		}
+		if (i > 23 && i < 33)
+		{
+			x = x - (SCREEN_WIDTH * 3);
+			y = 20 * 3;
+		}
+		y = y + 3;
+		bricks[i] = new Brick(x, y);
+	}
 
 	// Controllers.
 	if (argc == 2) {
@@ -114,19 +97,6 @@ Game::~Game() {
 	SDL_DestroyTexture(font_image_winner);
 	SDL_DestroyTexture(font_image_restart);
 	SDL_DestroyTexture(font_image_launch);
-
-	// Free sound effects.
-	/*Mix_FreeChunk(paddle_sound);
-	Mix_FreeChunk(wall_sound);
-	Mix_FreeChunk(score_sound);
-
-	// Quit SDL_mixer.
-	Mix_CloseAudio();
-
-	// Close joystick.
-	if (controller == joystick) {
-		SDL_JoystickClose(gamepad);
-	}*/
 
 	// Destroy renderer and window.
 	SDL_DestroyRenderer(renderer);
@@ -205,12 +175,6 @@ void Game::update() {
 		ball->bounces_off(left_paddle);
 		//Mix_PlayChannel(-1, paddle_sound, 0);  // Play collision sound.
 	}
-	else if (ball->collides_with(right_paddle)) {
-		ball->bounces_off(right_paddle);
-		// Predict ball position on the y-axis.
-
-		//Mix_PlayChannel(-1, paddle_sound, 0);
-	}
 
 	// Upper and bottom walls collision.
 	if (ball->wall_collision()) {
@@ -247,17 +211,18 @@ void Game::render() {
 	// Paddle color.
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
+	// Render bricks
+	for (int i = 0;i < 32;i++)
+	{			
+		SDL_Rect brick = { bricks[i]->x, bricks[i]->y, bricks[i]->WIDTH, bricks[i]->HEIGHT };
+		SDL_RenderFillRect(renderer, &brick);
+	}
+
 	// Render filled paddle.
 	SDL_Rect paddle1 = { left_paddle->get_x(),
 		left_paddle->get_y(),
 		Paddle::WIDTH, Paddle::HEIGHT };
 	SDL_RenderFillRect(renderer, &paddle1);
-
-	// Render filled paddle.
-	SDL_Rect paddle2 = { right_paddle->get_x(),
-		right_paddle->get_y(),
-		Paddle::WIDTH, Paddle::HEIGHT };
-	SDL_RenderFillRect(renderer, &paddle2);
 
 	// Render ball.
 	SDL_Rect pong_ball = { ball->x, ball->y, ball->WIDTH, ball->WIDTH };
