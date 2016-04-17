@@ -2,9 +2,10 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Brick.h"
-#include "Utilities.h"
+#include "Renderer.h"
 
 #include <iostream>
+#include <SDL_ttf.h>
 
 const int Game::SCREEN_WIDTH = 640;
 const int Game::SCREEN_HEIGHT = 480;
@@ -187,6 +188,7 @@ void Game::render() {
 	SDL_RenderClear(renderer);
 
 	//Rendre brikkan
+	bool allBricksGone = true;
 	for (int i = 0;i < 32;i++)
 	{
 		if (!bricks[i]->dead)
@@ -194,6 +196,16 @@ void Game::render() {
 			SDL_Rect brick = { bricks[i]->x, bricks[i]->y, bricks[i]->WIDTH, bricks[i]->HEIGHT };
 			SDL_SetRenderDrawColor(renderer, bricks[i]->get_r(), bricks[i]->get_g(), bricks[i]->get_b(), 255);
 			SDL_RenderFillRect(renderer, &brick);
+			allBricksGone = false;
+		}
+	}
+
+	if (allBricksGone)
+	{
+		ball->status = 0;
+		for (int i = 0; i < 32; i++)
+		{
+			bricks[i]->dead = false;
 		}
 	}
 

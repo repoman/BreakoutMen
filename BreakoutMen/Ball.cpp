@@ -1,17 +1,7 @@
 #include "Ball.h"
-
-#include <cmath>
-#include <random>
-#include <SDL_stdinc.h>
-
 #include "Paddle.h"
 #include "Brick.h"
 #include "Game.h"
-
-namespace {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-}
 
 const int Ball::WIDTH = 16;
 const int Ball::HEIGHT = 16;
@@ -35,12 +25,6 @@ Ball::~Ball()
 {}
 
 void Ball::launch_ball(Paddle *paddle) {
-	std::uniform_int_distribution<int> dir(0, 1);
-	int direction = 1 + (-2)*(dir(gen) % 2);
-
-	std::uniform_int_distribution<int> ang(-60, 60);
-	angle = ang(gen);
-
 	dx = speed/2;
 	dy = -speed/2;
 
