@@ -3,7 +3,7 @@
 #include "Game.h"
 
 const int Paddle::HEIGHT = 10;
-const int Paddle::WIDTH = 60;
+const int Paddle::WIDTH = 100;
 
 Paddle::Paddle(int new_x, int new_y) {
 	x = new_x;

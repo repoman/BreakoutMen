@@ -41,8 +41,8 @@ void Ball::launch_ball(Paddle *paddle) {
 	std::uniform_int_distribution<int> ang(-60, 60);
 	angle = ang(gen);  // Between -60 and 60.
 
-	dx = speed/2;//direction*speed*std::cos(angle*M_PI / 180.0f);  // Speed on the x-axis.
-	dy = -speed/2;//speed*std::sin(angle*M_PI / 180.0f);  // Speed on the y-axis.
+	dx = speed/2;
+	dy = -speed/2;
 
 	status = 2;
 
@@ -51,9 +51,10 @@ void Ball::launch_ball(Paddle *paddle) {
 }
 
 void Ball::bounces_off(Paddle *paddle) {
-	if (paddle == nullptr)
-		return;
+	int hitSpot = ((x+(WIDTH/2)) - (paddle->get_x() + paddle->WIDTH) / 2);
 
+	
+	/*
 	int sign = (paddle->get_x() < Game::SCREEN_WIDTH / 2) ? 1 : -1;
 
 	int relative_y = (y - paddle->get_y() + WIDTH);
@@ -65,6 +66,7 @@ void Ball::bounces_off(Paddle *paddle) {
 
 	// Convert angle to radina, find its sin() and multiply by the speed.
 	dy = speed*std::sin(angle*M_PI / 180.0f);
+	*/
 }
 
 
@@ -78,15 +80,14 @@ bool Ball::wall_collision()
 }
 
 bool Ball::collides_with(Paddle *paddle) {
-	if (paddle->get_x() < Game::SCREEN_WIDTH)
-		// Check if collision with left paddle occurs in next frame
-		if (x > paddle->get_x() + Paddle::WIDTH ||
-			x < paddle->get_x() ||
-			!(y + WIDTH > paddle->get_y() &&
-				y <= paddle->get_y() + Paddle::HEIGHT))
-			return false;
-		else
-			return true;
+	// Sjekk om ballen kolliderer med paddle i neste frame
+	if (x > paddle->get_x() + Paddle::WIDTH ||
+		x < paddle->get_x() ||
+		!(y + WIDTH > paddle->get_y() &&
+			y <= paddle->get_y() + Paddle::HEIGHT))
+		return false;
+	else
+		return true;
 }
 
 bool Ball::collides_with_brick(Brick *brick)
