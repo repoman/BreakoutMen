@@ -1,5 +1,16 @@
-#include <iostream>
+#include "Game.h"
+
+int main(int argc, char* argv[]) {
+	Game game(argc, argv);
+	game.execute();
+	return 0;
+}
+
+
+/*#include <iostream>
 #include "Main.h"
+
+
 
 int main(int argc, char* argv[])
 {
@@ -69,12 +80,6 @@ int main(int argc, char* argv[])
 	paddle.x = 250;
 	paddle.y = 360;
 
-	SDL_Rect ball;
-	ball.h = 32;
-	ball.w = 32;
-	ball.x = 304;
-	ball.y = 448;
-
 	SDL_FreeSurface(image);
 
 	// ---------------------------------------
@@ -89,7 +94,7 @@ int main(int argc, char* argv[])
 		// 3) Render output:
 		SDL_RenderClear(renderer); //her klarerer man renderern skjønner?
 		SDL_RenderCopy(renderer, texture, NULL, &paddle);
-		SDL_RenderCopy(renderer, texture, NULL, &ball);
+		
 		SDL_RenderPresent(renderer);
 
 		paddle.x += 1;
@@ -107,4 +112,4 @@ int main(int argc, char* argv[])
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return EXIT_SUCCESS;
-}
+}*/
