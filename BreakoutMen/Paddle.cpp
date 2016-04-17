@@ -1,4 +1,5 @@
 #include "Paddle.h"
+#include "Ball.h"
 #include "Game.h"
 
 const int Paddle::HEIGHT = 10;

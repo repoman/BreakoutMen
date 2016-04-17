@@ -6,7 +6,7 @@ void renderTexture(
 	SDL_Texture* texture,
 	SDL_Renderer* renderer, 
 	SDL_Rect dst, 
-	SDL_Rect* rect) {
+	SDL_Rect *rect) {
 		SDL_RenderCopy(renderer, texture, rect, &dst);
 }
 
