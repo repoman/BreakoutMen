@@ -1,5 +1,5 @@
 #include <iostream>
-#include <SDL.h>
+#include "Main.h"
 
 int main(int argc, char* argv[])
 {
@@ -10,12 +10,12 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	window = SDL_CreateWindow(
+	SDL_Window* window = SDL_CreateWindow(
 		"An awesome SDL window",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
-		550,
-		400,
+		640,
+		480,
 		SDL_WINDOW_SHOWN
 		); // her lagar vi vinduet skjønner?
 
@@ -63,11 +63,17 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	} // funka teksturen skjøner???
 
-	SDL_Rect bounding_box;
-	bounding_box.h = 10;
-	bounding_box.w = 90;
-	bounding_box.x = 250;
-	bounding_box.y = 360;
+	SDL_Rect paddle;
+	paddle.h = 10;
+	paddle.w = 90;
+	paddle.x = 250;
+	paddle.y = 360;
+
+	SDL_Rect ball;
+	ball.h = 32;
+	ball.w = 32;
+	ball.x = 304;
+	ball.y = 448;
 
 	SDL_FreeSurface(image);
 
@@ -78,9 +84,16 @@ int main(int argc, char* argv[])
 
 	// TODO: 2) Do business (domain) logic.
 
-	// 3) Render output:
-	SDL_RenderCopy(renderer, texture, NULL, &bounding_box);
-	SDL_RenderPresent(renderer);
+	while (true)
+	{
+		// 3) Render output:
+		SDL_RenderClear(renderer); //her klarerer man renderern skjønner?
+		SDL_RenderCopy(renderer, texture, NULL, &paddle);
+		SDL_RenderCopy(renderer, texture, NULL, &ball);
+		SDL_RenderPresent(renderer);
+
+		paddle.x += 1;
+	}
 
 	// Game loop would normally end here.
 	// ---------------------------------------

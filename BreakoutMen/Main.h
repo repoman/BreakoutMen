@@ -7,6 +7,5 @@
 
 class Main
 {
-	SDL_Window* window;
 };
 

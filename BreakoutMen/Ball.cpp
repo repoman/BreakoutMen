@@ -1,26 +1,24 @@
 #include "Ball.h"
 
-
-
 Ball::Ball()
 {
-	xpos = 0;
-	ypos = 0;
-	xvel = 1;
-	yvel = 1;
+	x = 0;
+	y = 0;
+	xVelocity = 0;
+	yVelocity = -1;
 }
 
 
 Ball::~Ball()
 {}
 
-void Ball::Move(float tick)
+void Ball::Move(int time)
 {
-	xpos += xvel*tick;
-	ypos += yvel*tick;
+	x += xVelocity * time;
+	y += yVelocity * time;
 }
 
 void Ball::render()
 {
-	
+	SDL_rect
 }

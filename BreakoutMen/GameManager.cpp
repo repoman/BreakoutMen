@@ -1,7 +1,5 @@
 #include "GameManager.h"
 
-
-
 GameManager::GameManager(SDL_Renderer* renderer) {
 	this->renderer = renderer;
 
