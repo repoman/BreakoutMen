@@ -5,6 +5,7 @@
 #include "Utilities.h"
 
 #include <iostream>
+#include <SDL_ttf.h>
 
 const int Game::SCREEN_WIDTH = 640;
 const int Game::SCREEN_HEIGHT = 480;
