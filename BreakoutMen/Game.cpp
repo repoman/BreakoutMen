@@ -1,10 +1,10 @@
 #include "Game.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Brick.h"
 #include "Utilities.h"
 
 #include <iostream>
-#include "Brick.h"
 
 // Screen resolution.
 const int Game::SCREEN_WIDTH = 640;
@@ -36,23 +36,35 @@ Game::Game(int argc, char *argv[]) {
 	{
 		int x = i * (SCREEN_WIDTH / 8) + 3;
 		int y = 0;
+		int r = 255;
+		int g = 0;
+		int b = 0;
 		if (i > 7 && i < 16)
 		{
 			x = x - SCREEN_WIDTH;
 			y = 20;
+			r = 0;
+			g = 255;
+			b = 0;
 		}
 		if (i > 15 && i < 24)
 		{
 			x = x - (SCREEN_WIDTH * 2);
 			y = 20 * 2;
+			r = 0;
+			g = 0;
+			b = 255;
 		}
 		if (i > 23 && i < 33)
 		{
 			x = x - (SCREEN_WIDTH * 3);
 			y = 20 * 3;
+			r = 255;
+			g = 255;
+			b = 0;
 		}
 		y = y + 3;
-		bricks[i] = new Brick(x, y);
+		bricks[i] = new Brick(x, y, r, g, b);
 	}
 
 	// Controllers.
@@ -224,18 +236,19 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // Dark grey.
 	SDL_RenderClear(renderer);
 
-	// Paddle color.
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-
 	// Render bricks
 	for (int i = 0;i < 32;i++)
 	{
 		if (!bricks[i]->dead)
 		{
 			SDL_Rect brick = { bricks[i]->x, bricks[i]->y, bricks[i]->WIDTH, bricks[i]->HEIGHT };
+			SDL_SetRenderDrawColor(renderer, bricks[i]->get_r(), bricks[i]->get_g(), bricks[i]->get_b(), 255);
 			SDL_RenderFillRect(renderer, &brick);
 		}
 	}
+
+	// Paddle color.
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 	// Render filled paddle.
 	SDL_Rect paddleRect = { paddle->get_x(),
