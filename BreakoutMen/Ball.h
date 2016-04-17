@@ -1,16 +1,36 @@
 #pragma once
+
+class Paddle;
+
 class Ball
 {
-public:
-	Ball();
+  public:
+	Ball(int x, int y);
 	~Ball();
-	void Move(float tick);
-	void render();
-	static const int width = 10;
-	static const int height = 10;
 
-private:
-	float xpos, ypos, xvel, yvel;
+	//ball status
+	int status;
 	
-};
+	//Ball dimensions
+	static const int WIDTH;
+	static const int HEIGHT;
 
+	//ball position
+	int x;
+	int y;
+
+	// ball movements
+	int dx;
+	int dy;
+
+	bool bounce;
+
+	int speed;
+	float angle;
+
+	void launch_ball(Paddle *paddle);
+	bool wall_collision();
+	bool collides_with(Paddle *paddle);
+	void bounces_off(Paddle *paddle);
+	void reset();
+};

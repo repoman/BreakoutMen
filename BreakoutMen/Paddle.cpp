@@ -1,50 +1,39 @@
 #include "Paddle.h"
+#include "Ball.h"
+#include "Game.h"
 
+const int Paddle::HEIGHT = 10;
+const int Paddle::WIDTH = 60;
 
-Paddle::Paddle(SDL_Renderer* renderer) {
-	SDL_Surface* surface = IMG_Load("sdl2.bmp");
-	texture = SDL_CreateTextureFromSurface(renderer, surface);
-	SDL_FreeSurface(surface);
-
-	mPosX = 0;
-	mPosY = 0;
-
-	mVelX = 0;
-
-
+Paddle::Paddle(int new_x, int new_y) {
+	x = new_x;
+	y = new_y;
 }
 
-void Paddle::handleEvent(SDL_Event& e) {
-	if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_LEFT: mVelX -= PADDLE_SPEED; break;
-		case SDLK_RIGHT: mVelX += PADDLE_SPEED; break;
-		}
-	}
-
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0) {
-		switch (e.key.keysym.sym)
-		{
-		case SDLK_LEFT: mVelX += PADDLE_SPEED; break;
-		case SDLK_RIGHT: mVelX -= PADDLE_SPEED; break;
-		}
-	}
+int Paddle::get_x() const {
+	return x;
 }
 
-void Paddle::move() {
-	mPosX += mVelX;
-
-	if ((mPosX < 0) || (mPosX + PADDLE_WIDTH > GameInit::SCREEN_WIDTH)) {
-		mPosX -= mVelX;
-	}
+int Paddle::get_y() const {
+	return y;
 }
 
-void Paddle::render() {
-	SDL_Rect rect;
-	rect.x = 0;
-	rect.y = 0;
-	rect.w = PADDLE_WIDTH;
-	rect.h = PADDLE_HEIGHT;
-	SDL_RenderCopy(renderer, texture, 0, &rect);
+void Paddle::set_y(int new_y) {
+	y = new_y;
+
+	// Paddle shouldn't be allowed to go above or below the screen.
+	if (y < 0)
+		y = 0;
+	else if (y + HEIGHT > Game::SCREEN_HEIGHT)
+		y = Game::SCREEN_HEIGHT - HEIGHT;
+}
+
+void Paddle::add_to_y(int new_y) {
+	y += new_y;
+
+	// Paddle shouldn't be allowed to go above or below the screen.
+	if (y < 0)
+		y = 0;
+	else if (y + HEIGHT > Game::SCREEN_HEIGHT)
+		y = Game::SCREEN_HEIGHT - HEIGHT;
 }

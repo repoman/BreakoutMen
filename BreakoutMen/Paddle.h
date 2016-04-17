@@ -1,25 +1,23 @@
-#include "SDL.h"
-#include "GameInit.h"
+#pragma once
+
+class Ball;
 
 class Paddle
 {
-public:
-	static const int PADDLE_WIDTH = 40;
-	static const int PADDLE_HEIGHT = 10;
-
-	static const int PADDLE_SPEED = 10;
-
-	Paddle(SDL_Renderer* renderer);
-
-	void handleEvent(SDL_Event& e);
-
-	void move();
-
-	void render();
-
 private:
-	int mPosX, mPosY;
-	int mVelX;
+	int x;
+	int y;
 
-	SDL_Texture* texture;
+public:
+	Paddle(int x, int y);
+
+	// Paddle dimensions
+	static const int WIDTH;
+	static const int HEIGHT;
+
+	int get_x() const;
+	int get_y() const;
+	void set_y(int new_y);
+	void add_to_y(int new_y);
+	//int predict(Ball *ball); void AI(Ball *ball);
 };
