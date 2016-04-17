@@ -1,11 +1,12 @@
 #pragma once
 
+class Brick;
 class Paddle;
 
 class Ball
 {
   public:
-	Ball(int x, int y);
+	Ball(Paddle* paddle);
 	~Ball();
 
 	//ball status
@@ -29,8 +30,10 @@ class Ball
 	float angle;
 
 	void launch_ball(Paddle *paddle);
+	bool roof_collision();
 	bool wall_collision();
 	bool collides_with(Paddle *paddle);
+	bool collides_with_brick(Brick *brick);
 	void bounces_off(Paddle *paddle);
-	void reset();
+	void reset(Paddle *paddle);
 };

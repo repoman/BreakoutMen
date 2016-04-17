@@ -29,9 +29,8 @@ Game::Game(int argc, char *argv[]) {
 		SDL_RENDERER_PRESENTVSYNC);
 
 	// Instantiate game objects.
-	ball = new Ball(SCREEN_WIDTH / 2 - ball->WIDTH / 2,
-		SCREEN_HEIGHT / 2 - ball->WIDTH / 2);
 	paddle = new Paddle(SCREEN_WIDTH/2, SCREEN_HEIGHT - 20);
+	ball = new Ball(paddle);
 
 	for (int i = 0;i < 32;i++)
 	{
@@ -61,12 +60,6 @@ Game::Game(int argc, char *argv[]) {
 		if (strcmp(argv[1], "keyboard") == 0) {
 			controller = keyboard;
 		}
-		/*else if (strcmp(argv[1], "joystick") == 0) {
-			controller = joystick;
-		}
-		else {
-			controller = mouse;
-		}*/
 	}
 	
 	// Fonts.
@@ -76,13 +69,6 @@ Game::Game(int argc, char *argv[]) {
 	font_image_launch = renderText("Press SPACE to start",
 		font_name, font_color, 18, renderer);
 
-	// Scores.
-	//left_score = 0;
-
-	// Indicates when rendering new score is necessary.
-	//left_score_changed = true;
-
-	// Game status.
 	exit = false;
 }
 
@@ -203,10 +189,15 @@ void Game::update() {
 		//Mix_PlayChannel(-1, paddle_sound, 0);  // Play collision sound.
 	}
 
-	// Upper and bottom walls collision.
-	if (ball->wall_collision()) {
+	// Upper and side walls collision.
+	if (ball->roof_collision()) {
 		ball->dy *= -1;  // Reverse ball direction on y-axis.
 		//Mix_PlayChannel(-1, wall_sound, 0);  // Play collision sound.
+	}
+
+	if (ball->wall_collision())
+	{
+		ball->dx *= -1;
 	}
 
 	// Update ball coordinates.
@@ -214,18 +205,8 @@ void Game::update() {
 	ball->y += ball->dy;
 
 	// Ball goes out.
-	if (ball->x > SCREEN_WIDTH || ball->x < 0) {
-		// Change score.
-		if (ball->x > SCREEN_WIDTH) {
-			left_score++;
-			left_score_changed = true;
-		}
-		else {
-			//right_score++;
-			//right_score_changed = true;
-		}
-		//Mix_PlayChannel(-1, score_sound, 0);
-		ball->reset();
+	if (ball->y > SCREEN_HEIGHT) {
+		ball->reset(paddle);
 	}
 }
 
@@ -297,7 +278,7 @@ void Game::render() {
 	else if (ball->status == 0) {
 		// Draw "Press SPACE to start".
 		renderTexture(font_image_launch,
-			renderer, SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT - 25);
+			renderer, SCREEN_WIDTH / 2 - 120, SCREEN_HEIGHT / 2);
 	}
 
 	// Swap buffers.

@@ -15,12 +15,12 @@ namespace {
 const int Ball::WIDTH = 32;
 const int Ball::HEIGHT = 32;
 
-Ball::Ball(int x, int y)
+Ball::Ball(Paddle* paddle)
 {
-	status = 1;
+	status = 0;
 
-	this->x = x;
-	this->y = y;
+	x = paddle->get_x();
+	y = paddle->get_y() - this->HEIGHT / 2;
 
 	dx = 0;
 	dy = 0;
@@ -33,17 +33,20 @@ Ball::Ball(int x, int y)
 Ball::~Ball()
 {}
 
-void Ball::launch_ball(Paddle *ai_paddle) {
+void Ball::launch_ball(Paddle *paddle) {
 	std::uniform_int_distribution<int> dir(0, 1);
 	int direction = 1 + (-2)*(dir(gen) % 2);  // Either 1 or -1.
 
 	std::uniform_int_distribution<int> ang(-60, 60);
 	angle = ang(gen);  // Between -60 and 60.
 
-	dx = direction*speed*std::cos(angle*M_PI / 180.0f);  // Speed on the x-axis.
-	dy = speed*std::sin(angle*M_PI / 180.0f);  // Speed on the y-axis.
+	dx = speed/2;//direction*speed*std::cos(angle*M_PI / 180.0f);  // Speed on the x-axis.
+	dy = -speed/2;//speed*std::sin(angle*M_PI / 180.0f);  // Speed on the y-axis.
 
-	status = 1;
+	status = 2;
+
+	x = paddle->get_x();
+	y = paddle->get_y()-this->HEIGHT/2;
 }
 
 void Ball::bounces_off(Paddle *paddle) {
@@ -64,8 +67,13 @@ void Ball::bounces_off(Paddle *paddle) {
 }
 
 
-bool Ball::wall_collision() {
-	return (y + dy < 0) || (y + WIDTH + dy >= Game::SCREEN_HEIGHT);
+bool Ball::roof_collision() {
+	return y + dy < 0;
+}
+
+bool Ball::wall_collision()
+{
+	return (x + dx <= 0) || (x + dx + WIDTH > Game::SCREEN_WIDTH);
 }
 
 bool Ball::collides_with(Paddle *paddle) {
@@ -91,10 +99,16 @@ bool Ball::collides_with(Paddle *paddle) {
 	}
 }
 
+bool Ball::collides_with_brick(Brick* brick)
+{
+	//if (x == brick->getx)
+}
+
+
 // Reset ball to initial state.
-void Ball::reset() {
-	x = Game::SCREEN_WIDTH / 2 - WIDTH / 2;
-	y = Game::SCREEN_HEIGHT / 2;
+void Ball::reset(Paddle *paddle) {
+	x = paddle->get_x();
+	y = paddle->get_y() - this->HEIGHT / 2;
 
 	// Ball is fixed.
 	dx = 0;
